@@ -29,16 +29,21 @@ public:
     Philosopher(int v = 0) : name(v) {}
 
     void eat(Fork& left_fork, Fork& right_fork) {
+        // пробует взять 1 вылку
         if (left_fork.mtx.try_lock()) {
-            if (right_fork.mtx.try_lock()) {
-                std::cout << "P " << name << " eat" << endl;
-                Sleep(rand() % (21 - 10) + 10);
-                count++;
-                right_fork.mtx.unlock();
-                left_fork.mtx.unlock();
+            // если взял 1, то пробует взять 2 вылку несколько раз(1-3)
+            for (int i = 0; i <= rand() % 3 + 1; i++) {
+                if (right_fork.mtx.try_lock()) {
+                    std::cout << "P " << name << " eat" << endl;
+                    Sleep(rand() % (21 - 10) + 10);
+                    count++;
+                    right_fork.mtx.unlock();
+                    left_fork.mtx.unlock();
+                    return;
+                }
+                Sleep(1);
             }
-            else
-                left_fork.mtx.unlock();
+            left_fork.mtx.unlock();
         }
     }
 
