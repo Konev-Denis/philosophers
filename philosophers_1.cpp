@@ -71,7 +71,7 @@ int main() {
     std::cout << "Enter the number of philosophers: ";
     std::cin >> count_philosopher;
 
-    for (int i = 0; i <= count_philosopher; i++) {
+    for (int i = 0; i < count_philosopher; i++) {
         philosophers.push_back(Philosopher(i));
         forks.push_back(Fork(i));
     }
